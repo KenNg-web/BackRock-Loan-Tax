@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -405,7 +405,7 @@ function addCalculator(){
           <option value="Hire Purchase">Hire Purchase</option>
           <option value="Tax Calculator">Tax Calculator</option>
         </select>
-        <button class="small-btn" onclick="toggleMode(${calcCount})">Switch to Monthly Mode</button>
+        <button id="modeBtn${calcCount}" class="small-btn" onclick="toggleMode(${calcCount})" style="display:none">Switch to Monthly Mode</button>
         <button class="small-btn" style="background:#dc3545;color:#fff" onclick="removeCalculator(${calcCount})">Remove</button>
       </div>
     </div>
@@ -447,9 +447,11 @@ function renderInputs(id){
   const type = document.getElementById('type'+id).value;
   const mode = modes[id] || 'loan';
   const container = document.getElementById('inputs'+id);
+  const modeBtn = document.getElementById('modeBtn'+id);
   let html = '';
 
   if(type === 'Tax Calculator'){
+    modeBtn.style.display = 'none';
     html += `<label>Original Profit (RM)</label><input id="oriProfit${id}" type="text" placeholder="Original profit">`;
     html += `<label>Only Want to Pay Tax (RM)</label><input id="targetTax${id}" type="text" placeholder="Desired Payable Tax">`;
     html += `<div class="row">`;
@@ -457,6 +459,7 @@ function renderInputs(id){
     html += `<div><label>Transfer (%)</label><input id="transferPerc${id}" type="text" placeholder="Base 3.5%, Max 5%"></div>`;
     html += `</div>`;
   } else if(type === 'Mortgage'){
+    modeBtn.style.display = 'inline-block';
     if(mode === 'loan'){
       html += `<label>SNP Price </label><input id="snp${id}" type="text" placeholder="Follow The Purchase Price, Included Cash Back">`;
       html += `<label>Loan Size (RM): </label><input id="loan${id}" type="text" placeholder="Base On The Loan Amount With Bank">`;
@@ -474,6 +477,7 @@ function renderInputs(id){
     html += `<div class="remark">Remark: Legal Fees Estimated. Final Price Based On Law Firm Quotation.</div>`;
     html += `<div class="remark">If Below 800k Cash back around 110k. 500k Below Cash Back around 70k. Cash Back Is Estimated, Depends On The Property Price.</div>`;
   } else if(type === 'Personal Loan'){
+    modeBtn.style.display = 'inline-block';
     if(mode === 'loan'){
       html += `<label>Loan Size (RM): </label><input id="loan${id}" type="text" placeholder="Max 200k, If More Than 200k Please Refer To Keyman">`;
     } else {
@@ -491,6 +495,7 @@ function renderInputs(id){
     html += `<label>Advance Payment (Months) - Check With Keyman Require Or Not </label><input id="advance${id}" type="text" placeholder="0">`;
     html += `<div id="takafulRemark${id}" class="remark"></div>`;
   } else if(type === 'Hire Purchase'){
+    modeBtn.style.display = 'inline-block';
     if(mode === 'loan'){
       html += `<label>Loan Size (RM)</label><input id="loan${id}" type="text" placeholder="Min 350k">`;
     } else {
@@ -505,6 +510,7 @@ function renderInputs(id){
     html += `<div class="remark">Cash Back Is Estimated, Depends On The Market Value.</div>`;
     html += `<div class="remark">*Not Yet Include Insurance And Roadtax*</div>`;
   } else {
+    modeBtn.style.display = 'inline-block';
     if(mode === 'loan'){
       html += `<label>Loan Size (RM)</label><input id="loan${id}" type="text" placeholder="${type==='Bank SME Loan'?'Follow Purposal For The Max Loan Amount':'If Above 200k Refer To Keyman.'}">`;
     } else {
